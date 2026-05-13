@@ -127,7 +127,7 @@ export default function Chat() {
           <MessageSquare className="w-12 h-12 text-blue-600 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In Required</h2>
           <p className="text-slate-600 mb-6">
-            Please sign in to access the MBA Class Assistant chatbot.
+            Please sign in to access Rebecca.
           </p>
           <a href={getLoginUrl()}>
             <Button className="w-full bg-blue-600 hover:bg-blue-700">Sign In</Button>
@@ -148,7 +148,7 @@ export default function Chat() {
               Back
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-slate-900">MBA Class Assistant</h1>
+          <h1 className="text-xl font-bold text-slate-900">Rebecca</h1>
           <Button
             variant="ghost"
             size="sm"
@@ -177,7 +177,7 @@ export default function Chat() {
                     </Link>
                   )}
                   <a
-                    href="https://www.linkedin.com/in/yourprofile"
+                    href="https://www.linkedin.com/in/freakazoid"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -313,7 +313,7 @@ export default function Chat() {
               </p>
             </div>
             <a
-              href="https://www.linkedin.com/in/yourprofile"
+              href="https://www.linkedin.com/in/freakazoid"
               target="_blank"
               rel="noopener noreferrer"
             >

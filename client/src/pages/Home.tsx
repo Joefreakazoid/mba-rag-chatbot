@@ -7,7 +7,7 @@ import { ArrowRight, BookOpen, Brain, MessageSquare, Sparkles, Linkedin } from "
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
 
-  const linkedinUrl = "https://www.linkedin.com/in/yourprofile"; // Replace with your LinkedIn profile
+  const linkedinUrl = "https://www.linkedin.com/in/freakazoid";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
@@ -16,7 +16,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="w-6 h-6 text-blue-600" />
-            <span className="text-xl font-bold text-slate-900">MBA Class Assistant</span>
+            <span className="text-xl font-bold text-slate-900">Rebecca</span>
           </div>
           <div className="flex items-center gap-4">
             {isAuthenticated ? (
@@ -51,7 +51,7 @@ export default function Home() {
               size="sm"
               className="bg-white text-blue-600 hover:bg-blue-50"
             >
-              Follow Now
+              Let's Connect
             </Button>
           </a>
         </div>
@@ -70,14 +70,13 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
             Your Personal{" "}
             <span className="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
-              MBA Class Assistant
+              MBA Study Companion
             </span>
           </h1>
 
           {/* Subheading */}
           <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Ask intelligent questions about your MBA coursework and get instant, well-sourced answers
-            powered by retrieval-augmented generation from your class notes.
+            Meet Rebecca — your AI-powered study companion, built by an MBA alumni who knows the grind. Ask questions about your coursework and get instant, well-sourced answers from your class materials.
           </p>
 
           {/* CTA Buttons */}
@@ -104,7 +103,7 @@ export default function Home() {
                 className="gap-2 border-slate-300 text-slate-700 hover:bg-slate-50"
               >
                 <Linkedin className="w-4 h-4" />
-                Follow on LinkedIn
+                Connect with Me
               </Button>
             </a>
           </div>
@@ -140,7 +139,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">
-              Why Use MBA Class Assistant?
+              Why Use Rebecca?
             </h2>
             <p className="text-lg text-slate-600 text-center mb-16">
               Transform how you learn and retain MBA concepts
@@ -227,7 +226,7 @@ export default function Home() {
                 className="gap-2 border-white text-white hover:bg-blue-700"
               >
                 <Linkedin className="w-4 h-4" />
-                Follow on LinkedIn
+                Connect with Me
               </Button>
             </a>
           </div>
@@ -240,7 +239,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
               <Brain className="w-5 h-5 text-blue-400" />
-              <span className="font-semibold text-white">MBA Class Assistant</span>
+              <span className="font-semibold text-white">Rebecca</span>
             </div>
             <div className="flex gap-6">
               <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
@@ -255,7 +254,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm">
-            <p>© 2026 MBA Class Assistant. All rights reserved.</p>
+            <p>© 2026 Rebecca. All rights reserved.</p>
           </div>
         </div>
       </footer>
