@@ -42,12 +42,12 @@ export async function storagePut(
     throw new Error(`Storage upload failed: ${error.message}`);
   }
 
-  return { key, url: `/app-storage/${key}` };
+  return { key, url: `/api/storage/${key}` };
 }
 
 export async function storageGet(relKey: string): Promise<{ key: string; url: string }> {
   const key = normalizeKey(relKey);
-  return { key, url: `/app-storage/${key}` };
+  return { key, url: `/api/storage/${key}` };
 }
 
 export async function storageGetSignedUrl(relKey: string): Promise<string> {
