@@ -89,8 +89,7 @@ export const appRouter = router({
             },
           });
 
-          // Get the inserted document ID
-          const documentId = (result as any).insertId;
+          const documentId = result.id;
 
           // Store chunks in database
           for (let i = 0; i < processedChunks.length; i++) {
@@ -298,7 +297,7 @@ export const appRouter = router({
             success: true,
             answer,
             sources: sourceDocuments,
-            messageId: (messageResult as any).insertId,
+            messageId: messageResult.id,
           };
         } catch (error) {
           console.error("Error processing chat message:", error);

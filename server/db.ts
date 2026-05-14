@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import {
   InsertUser,
   users,
@@ -16,13 +17,15 @@ import {
   Message,
   DocumentChunk,
 } from "../drizzle/schema";
+
 let _db: ReturnType<typeof drizzle> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
-export async function getDb() {
+export function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      const client = postgres(process.env.DATABASE_URL);
+      _db = drizzle(client);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
@@ -36,16 +39,14 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     throw new Error("User openId is required for upsert");
   }
 
-  const db = await getDb();
+  const db = getDb();
   if (!db) {
     console.warn("[Database] Cannot upsert user: database not available");
     return;
   }
 
   try {
-    const values: InsertUser = {
-      openId: user.openId,
-    };
+    const values: InsertUser = { openId: user.openId };
     const updateSet: Record<string, unknown> = {};
 
     const textFields = ["name", "email", "loginMethod"] as const;
@@ -78,9 +79,10 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
-      set: updateSet,
-    });
+    await db
+      .insert(users)
+      .values(values)
+      .onConflictDoUpdate({ target: users.openId, set: updateSet });
   } catch (error) {
     console.error("[Database] Failed to upsert user:", error);
     throw error;
@@ -88,7 +90,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 }
 
 export async function getUserByOpenId(openId: string) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) {
     console.warn("[Database] Cannot get user: database not available");
     return undefined;
@@ -106,13 +108,13 @@ export async function getUserByOpenId(openId: string) {
 // ============ Document Queries ============
 
 export async function getDocuments(): Promise<Document[]> {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
   return db.select().from(documents).orderBy(documents.createdAt);
 }
 
 export async function getDocumentById(id: number): Promise<Document | undefined> {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
   const result = await db
     .select()
@@ -122,14 +124,15 @@ export async function getDocumentById(id: number): Promise<Document | undefined>
   return result.length > 0 ? result[0] : undefined;
 }
 
-export async function createDocument(data: InsertDocument) {
-  const db = await getDb();
+export async function createDocument(data: InsertDocument): Promise<{ id: number }> {
+  const db = getDb();
   if (!db) throw new Error("Database not available");
-  return db.insert(documents).values(data);
+  const result = await db.insert(documents).values(data).returning({ id: documents.id });
+  return result[0];
 }
 
 export async function deleteDocument(id: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) throw new Error("Database not available");
   return db.delete(documents).where(eq(documents.id, id));
 }
@@ -139,7 +142,7 @@ export async function deleteDocument(id: number) {
 export async function getConversationBySessionId(
   sessionId: string
 ): Promise<Conversation | undefined> {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
   const result = await db
     .select()
@@ -150,7 +153,7 @@ export async function getConversationBySessionId(
 }
 
 export async function createConversation(data: InsertConversation) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) throw new Error("Database not available");
   return db.insert(conversations).values(data);
 }
@@ -159,7 +162,7 @@ export async function updateConversation(
   id: number,
   data: Partial<Conversation>
 ) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) throw new Error("Database not available");
   return db.update(conversations).set(data).where(eq(conversations.id, id));
 }
@@ -169,7 +172,7 @@ export async function updateConversation(
 export async function getConversationMessages(
   conversationId: number
 ): Promise<Message[]> {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
   return db
     .select()
@@ -178,10 +181,11 @@ export async function getConversationMessages(
     .orderBy(messages.createdAt);
 }
 
-export async function createMessage(data: InsertMessage) {
-  const db = await getDb();
+export async function createMessage(data: InsertMessage): Promise<{ id: number }> {
+  const db = getDb();
   if (!db) throw new Error("Database not available");
-  return db.insert(messages).values(data);
+  const result = await db.insert(messages).values(data).returning({ id: messages.id });
+  return result[0];
 }
 
 // ============ Document Chunk Queries ============
@@ -189,7 +193,7 @@ export async function createMessage(data: InsertMessage) {
 export async function getDocumentChunks(
   documentId: number
 ): Promise<DocumentChunk[]> {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
   return db
     .select()
@@ -199,13 +203,13 @@ export async function getDocumentChunks(
 }
 
 export async function createDocumentChunk(data: InsertDocumentChunk) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) throw new Error("Database not available");
   return db.insert(documentChunks).values(data);
 }
 
 export async function deleteDocumentChunks(documentId: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) throw new Error("Database not available");
   return db
     .delete(documentChunks)
