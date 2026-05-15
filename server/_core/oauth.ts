@@ -21,9 +21,15 @@ export function registerAuthRoutes(app: Express) {
     }
 
     if (!ENV.adminEmail || !ENV.adminPassword) {
+      console.log("[Auth:debug] ADMIN_EMAIL configured:", false);
       res.status(500).json({ error: "Admin credentials not configured" });
       return;
     }
+
+    console.log("[Auth:debug] ADMIN_EMAIL prefix:", ENV.adminEmail.slice(0, 3));
+    console.log("[Auth:debug] submitted email prefix:", email.slice(0, 3));
+    console.log("[Auth:debug] email match:", email === ENV.adminEmail);
+    console.log("[Auth:debug] password match:", password === ENV.adminPassword);
 
     if (email !== ENV.adminEmail || password !== ENV.adminPassword) {
       res.status(401).json({ error: "Invalid credentials" });
