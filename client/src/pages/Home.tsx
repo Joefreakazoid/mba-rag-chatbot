@@ -27,9 +27,14 @@ export default function Home() {
                 </Link>
               </>
             ) : (
-              <a href={getLoginUrl()}>
-                <Button size="sm">Sign In</Button>
-              </a>
+              <>
+                <Link href="/chat">
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Start Chatting</Button>
+                </Link>
+                <a href={getLoginUrl()} className="text-sm text-slate-500 hover:text-slate-900">
+                  Admin
+                </a>
+              </>
             )}
           </div>
         </div>
@@ -81,21 +86,12 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            {isAuthenticated ? (
-              <Link href="/chat">
-                <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700">
-                  Start Chatting
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-            ) : (
-              <a href={getLoginUrl()}>
-                <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700">
-                  Get Started Free
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-            )}
+            <Link href="/chat">
+              <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700">
+                {isAuthenticated ? "Start Chatting" : "Get Started Free"}
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
             <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"
@@ -204,21 +200,12 @@ export default function Home() {
             Start asking questions and get intelligent answers backed by your class materials.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {isAuthenticated ? (
-              <Link href="/chat">
-                <Button size="lg" className="gap-2 bg-white text-blue-600 hover:bg-blue-50">
-                  Start Now
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-            ) : (
-              <a href={getLoginUrl()}>
-                <Button size="lg" className="gap-2 bg-white text-blue-600 hover:bg-blue-50">
-                  Get Started Free
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-            )}
+            <Link href="/chat">
+              <Button size="lg" className="gap-2 bg-white text-blue-600 hover:bg-blue-50">
+                {isAuthenticated ? "Start Now" : "Get Started Free"}
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
             <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"

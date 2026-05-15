@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
@@ -120,23 +119,6 @@ export default function Chat() {
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex items-center justify-center p-4">
-        <Card className="max-w-md w-full p-8 text-center">
-          <MessageSquare className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In Required</h2>
-          <p className="text-slate-600 mb-6">
-            Please sign in to access Rebecca.
-          </p>
-          <a href={getLoginUrl()}>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">Sign In</Button>
-          </a>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex flex-col">
       {/* Header */}
@@ -165,8 +147,16 @@ export default function Chat() {
             <div className="container mx-auto">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-slate-900">Logged in as {user?.name}</p>
-                  <p className="text-sm text-slate-600">{user?.email}</p>
+                  {isAuthenticated ? (
+                    <>
+                      <p className="font-semibold text-slate-900">Logged in as {user?.name}</p>
+                      <p className="text-sm text-slate-600">{user?.email}</p>
+                    </>
+                  ) : (
+                    <a href={getLoginUrl()} className="text-sm text-blue-600 hover:underline">
+                      Admin sign in
+                    </a>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   {user?.role === "admin" && (
