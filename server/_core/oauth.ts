@@ -21,7 +21,7 @@ export function registerAuthRoutes(app: Express) {
     }
 
     if (!ENV.adminEmail || !ENV.adminPassword) {
-      console.log("[Auth:debug] ADMIN_EMAIL configured:", false);
+      console.error("[Auth] Admin credentials not configured. ADMIN_EMAIL:", ENV.adminEmail ? "set" : "NOT SET");
       res.status(500).json({ error: "Admin credentials not configured" });
       return;
     }
@@ -30,10 +30,10 @@ export function registerAuthRoutes(app: Express) {
     const emailMatch = email.toLowerCase() === ENV.adminEmail.toLowerCase();
     const passwordMatch = password === ENV.adminPassword;
 
-    console.log("[Auth:debug] email match (case-insensitive):", emailMatch);
-    console.log("[Auth:debug] password match:", passwordMatch);
+    console.log(`[Auth] Login attempt - email: ${email}, emailMatch: ${emailMatch}, passwordMatch: ${passwordMatch}`);
 
     if (!emailMatch || !passwordMatch) {
+      console.log("[Auth] Login failed: invalid credentials");
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
@@ -60,7 +60,7 @@ export function registerAuthRoutes(app: Express) {
 
       res.json({ success: true });
     } catch (error) {
-      console.error("[Auth] Login failed", error);
+      console.error("[Auth] Login failed during session creation:", error);
       res.status(500).json({ error: "Login failed" });
     }
   });
