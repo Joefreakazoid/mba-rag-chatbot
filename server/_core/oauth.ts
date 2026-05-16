@@ -34,11 +34,24 @@ export function registerAuthRoutes(app: Express) {
     const emailMatch = submittedEmail === expectedEmail;
     const passwordMatch = submittedPassword === expectedPassword;
 
-    console.log(`[Auth] Login attempt - submittedEmail: ${submittedEmail}, expectedEmail: ${expectedEmail}, emailMatch: ${emailMatch}, passwordMatch: ${passwordMatch}`);
+    console.log(`[Auth] Credentials comparison:`);
+    console.log(`  submitted email: "${submittedEmail}" (length: ${submittedEmail.length})`);
+    console.log(`  expected email:  "${expectedEmail}" (length: ${expectedEmail.length})`);
+    console.log(`  submitted password length: ${submittedPassword.length}`);
+    console.log(`  expected password length: ${expectedPassword.length}`);
+    console.log(`  emailMatch: ${emailMatch}, passwordMatch: ${passwordMatch}`);
 
     if (!emailMatch || !passwordMatch) {
-      console.log("[Auth] Login failed: invalid credentials");
-      res.status(401).json({ error: "Invalid credentials" });
+      const debugInfo = {
+        emailMatch,
+        passwordMatch,
+        submittedEmailLen: submittedEmail.length,
+        expectedEmailLen: expectedEmail.length,
+        submittedPasswordLen: submittedPassword.length,
+        expectedPasswordLen: expectedPassword.length,
+      };
+      console.log("[Auth] Login failed with debug info:", debugInfo);
+      res.status(401).json({ error: "Invalid credentials", debug: debugInfo });
       return;
     }
 
