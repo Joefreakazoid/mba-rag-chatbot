@@ -26,12 +26,14 @@ export function registerAuthRoutes(app: Express) {
       return;
     }
 
-    console.log("[Auth:debug] ADMIN_EMAIL prefix:", ENV.adminEmail.slice(0, 3));
-    console.log("[Auth:debug] submitted email prefix:", email.slice(0, 3));
-    console.log("[Auth:debug] email match:", email === ENV.adminEmail);
-    console.log("[Auth:debug] password match:", password === ENV.adminPassword);
+    // Email comparison is case-insensitive
+    const emailMatch = email.toLowerCase() === ENV.adminEmail.toLowerCase();
+    const passwordMatch = password === ENV.adminPassword;
 
-    if (email !== ENV.adminEmail || password !== ENV.adminPassword) {
+    console.log("[Auth:debug] email match (case-insensitive):", emailMatch);
+    console.log("[Auth:debug] password match:", passwordMatch);
+
+    if (!emailMatch || !passwordMatch) {
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }

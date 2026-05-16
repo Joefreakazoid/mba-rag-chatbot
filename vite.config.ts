@@ -4,6 +4,7 @@ import path from "node:path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  appType: "spa",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
