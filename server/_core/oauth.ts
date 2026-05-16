@@ -26,11 +26,15 @@ export function registerAuthRoutes(app: Express) {
       return;
     }
 
-    // Email comparison is case-insensitive
-    const emailMatch = email.toLowerCase() === ENV.adminEmail.toLowerCase();
-    const passwordMatch = password === ENV.adminPassword;
+    const submittedEmail = email.trim().toLowerCase();
+    const submittedPassword = password.trim();
+    const expectedEmail = ENV.adminEmail.trim().toLowerCase();
+    const expectedPassword = ENV.adminPassword.trim();
 
-    console.log(`[Auth] Login attempt - email: ${email}, emailMatch: ${emailMatch}, passwordMatch: ${passwordMatch}`);
+    const emailMatch = submittedEmail === expectedEmail;
+    const passwordMatch = submittedPassword === expectedPassword;
+
+    console.log(`[Auth] Login attempt - submittedEmail: ${submittedEmail}, expectedEmail: ${expectedEmail}, emailMatch: ${emailMatch}, passwordMatch: ${passwordMatch}`);
 
     if (!emailMatch || !passwordMatch) {
       console.log("[Auth] Login failed: invalid credentials");
