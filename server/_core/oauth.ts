@@ -11,6 +11,22 @@ function getBodyField(req: Request, key: string): string | undefined {
 }
 
 export function registerAuthRoutes(app: Express) {
+  // Debug endpoint to check environment variables
+  app.get("/api/auth/debug", (req: Request, res: Response) => {
+    res.json({
+      env: {
+        hasAdminEmail: !!ENV.adminEmail,
+        adminEmailLength: ENV.adminEmail?.length || 0,
+        adminEmailPrefix: ENV.adminEmail?.slice(0, 5) || "NOT SET",
+        hasAdminPassword: !!ENV.adminPassword,
+        adminPasswordLength: ENV.adminPassword?.length || 0,
+        hasDatabaseUrl: !!ENV.databaseUrl,
+        hasLlmApiKey: !!ENV.llmApiKey,
+        nodeEnv: process.env.NODE_ENV,
+      },
+    });
+  });
+
   app.post("/api/auth/login", async (req: Request, res: Response) => {
     const email = getBodyField(req, "email");
     const password = getBodyField(req, "password");
