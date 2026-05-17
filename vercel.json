@@ -1,6 +1,6 @@
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "vite build && esbuild server/_core/index.ts --bundle --platform=node --format=cjs --packages=external --outfile=api/index.cjs",
+  "buildCommand": "vite build && esbuild server/api.ts --bundle --platform=node --format=cjs --packages=external --external:express --external:@trpc/server --external:postgres --external:drizzle-orm --outfile=api/index.cjs",
   "outputDirectory": "dist/public",
   "env": {
     "JWT_SECRET": { "description": "Secret key for JWT/cookie signing" },
