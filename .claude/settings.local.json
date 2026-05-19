@@ -3,7 +3,11 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "WebSearch",
+      "Bash(git clone *)",
+      "Bash(ls /Users/abasiifrekeudoabasi/Downloads/awesome-design-md)",
+      "Read(//Users/abasiifrekeudoabasi/Downloads/awesome-design-md/**)"
     ]
   }
 }

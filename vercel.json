@@ -1,21 +1,29 @@
 {
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "vite build && esbuild server/api.ts --bundle --platform=node --format=cjs --packages=external --external:express --external:@trpc/server --external:postgres --external:drizzle-orm --outfile=api/index.cjs",
+  "buildCommand": "pnpm build",
   "outputDirectory": "dist/public",
-  "env": {
-    "JWT_SECRET": { "description": "Secret key for JWT/cookie signing" },
-    "DATABASE_URL": { "description": "PostgreSQL connection string" },
-    "LLM_API_KEY": { "description": "OpenAI or Claude API key" },
-    "LLM_BASE_URL": { "description": "LLM API base URL (optional, defaults to OpenAI)" },
-    "LLM_MODEL": { "description": "LLM model to use (optional, defaults to gpt-4o-mini)" },
-    "ADMIN_EMAIL": { "description": "Admin account email" },
-    "ADMIN_PASSWORD": { "description": "Admin account password" },
-    "SUPABASE_URL": { "description": "Supabase project URL" },
-    "SUPABASE_KEY": { "description": "Supabase API key" },
-    "SUPABASE_BUCKET": { "description": "Supabase storage bucket name" }
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "functions": {
+    "api/index.cjs": {
+      "runtime": "nodejs20.x"
+    }
   },
   "rewrites": [
+    { "source": "/api/trpc/:path*", "destination": "/api?path=:path*" },
+    { "source": "/api/auth/:path*", "destination": "/api?path=:path*" },
     { "source": "/api/:path*", "destination": "/api" },
     { "source": "/:path*", "destination": "/index.html" }
-  ]
+  ],
+  "env": {
+    "JWT_SECRET": "@jwt_secret",
+    "DATABASE_URL": "@database_url",
+    "LLM_API_KEY": "@llm_api_key",
+    "LLM_BASE_URL": "@llm_base_url",
+    "LLM_MODEL": "@llm_model",
+    "ADMIN_EMAIL": "@admin_email",
+    "ADMIN_PASSWORD": "@admin_password",
+    "SUPABASE_URL": "@supabase_url",
+    "SUPABASE_KEY": "@supabase_key",
+    "SUPABASE_BUCKET": "@supabase_bucket",
+    "NODE_ENV": "production"
+  }
 }
