@@ -1,5 +1,5 @@
-// Vercel serverless function handler
-module.exports = require('../dist/server-api.cjs').default;
+// This file is generated during the build process by esbuild
+// Do not edit - it will be overwritten
         },
         "./config": "./config.js",
         "./config.js": "./config.js",
